@@ -28,7 +28,6 @@ A WordPress block plugin that fetches items from an external XML feed (RSS/Atom)
    ```
 2. Run the build:  
    ```bash
-   cd wp-content/plugins/af-xml-grid
    npm install
    npm run build
    ```
