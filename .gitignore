@@ -1,5 +1,6 @@
 /index.php/
 /package-lock.json
+/node_modules/
 *
 !/package.json
 !/index.php
@@ -8,7 +9,6 @@
 !/af-xml-grid/
 !/af-xml-grid/**
 /dev/
-/dev/node_modules/
 /dev/af-xml-grid/blocks/
 /dev/af-xml-grid/blocks/**
 !/dev/**

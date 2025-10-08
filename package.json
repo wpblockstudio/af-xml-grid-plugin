@@ -2,8 +2,8 @@
   "name": "af-xml-grid",
   "version": "1.0.0",
   "scripts": {
-    "start": "wp-scripts start --webpack-src-dir=./src/blocks --output-path=./af-xml-grid/blocks --experimental-modules",
-    "build": "wp-scripts build --webpack-src-dir=./src/blocks --output-path=./af-xml-grid/blocks --experimental-modules"
+    "start": "wp-scripts start --webpack-src-dir=./dev/src/blocks --output-path=./dev/af-xml-grid/blocks --experimental-modules",
+    "build": "wp-scripts build --webpack-src-dir=./dev/src/blocks --output-path=./dev/af-xml-grid/blocks --experimental-modules"
   },
   "devDependencies": {
     "@wordpress/block-editor": "^15.5.0",
