@@ -24,7 +24,7 @@ A WordPress block plugin that fetches items from an external XML feed (RSS/Atom)
 
 1. Clone this repository into your plugins directory:  
    ```bash
-   git clone https://github.com/thedivlabs/af-xml-grid.git wp-content/plugins/af-xml-grid
+   git clone https://github.com/thedivlabs/af-xml-grid-plugin.git
    ```
 2. Run the build:  
    ```bash
