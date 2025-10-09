@@ -95,7 +95,12 @@ const Style = ({settings, breakpoints}) => {
 
     const selector = `.${settings.instanceId}`;
 
-    const rules = Object.entries(settings.css.responsive)
+    const baseRules = `.af-xml-grid${selector} {${Object.entries(settings.css.base || {})
+        .map(([key, val]) => `${key}:${val};`)
+        .join('')}}`;
+
+
+    const responsiveRules = Object.entries(settings.css.responsive)
         .map(([bpKey, vars]) => {
             const varsStr = Object.entries(vars)
                 .map(([key, val]) => `${key}:${val};`)
@@ -104,7 +109,7 @@ const Style = ({settings, breakpoints}) => {
         })
         .join('');
 
-    return <style>{rules}</style>;
+    return <style>{[baseRules,responsiveRules].join(' ')}</style>;
 };
 
 registerBlockType('af/xml-grid', {
