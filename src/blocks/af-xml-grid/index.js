@@ -1,6 +1,6 @@
 import {registerBlockType} from '@wordpress/blocks';
 import {InspectorControls, useBlockProps, useInnerBlocksProps, InnerBlocks} from '@wordpress/block-editor';
-import {useCallback, useEffect, useMemo} from "@wordpress/element";
+import {useCallback, useMemo} from "@wordpress/element";
 
 import {
     __experimentalGrid as Grid,
@@ -110,7 +110,6 @@ const Style = ({settings, breakpoints}) => {
 registerBlockType('af/xml-grid', {
     edit: ({attributes, setAttributes}) => {
 
-
         const {settings = {}} = attributes;
         const {
             feed,
@@ -148,7 +147,11 @@ registerBlockType('af/xml-grid', {
             )
         });
 
-        const innerBlocksProps = useInnerBlocksProps(blockProps, {});
+        const innerBlocksProps = useInnerBlocksProps(blockProps, {
+            allowedBlocks:[
+                'af/xml-grid-card',
+            ]
+        });
 
         const updateSettings = useCallback(
             (newValue = {}) => {
