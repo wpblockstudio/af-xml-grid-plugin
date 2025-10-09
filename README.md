@@ -59,7 +59,7 @@ A WordPress block plugin that fetches items from an external XML feed (RSS/Atom)
 ## Development
 
 - Source code lives in `/src/blocks/`.
-- Compiled assets are written to `/af-xml-grid/build/blocks/` and registered automatically.
+- Compiled assets are written to `/af-xml-grid/blocks/` and registered automatically.
 - Run dev mode:
   ```bash
   npm run start
