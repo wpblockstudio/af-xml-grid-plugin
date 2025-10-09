@@ -2,7 +2,7 @@
 
 A WordPress block plugin that fetches items from an external XML feed (RSS/Atom) and displays them in a responsive, paginated grid using the [Block Editor](https://developer.wordpress.org/block-editor/) and the [Interactivity API](https://developer.wordpress.org/block-editor/reference-guides/interactivity-api/).
 
-> **Note:** This is primarily a coding demo / portfolio project. It installs and works, but it’s not intended for production sites yet.
+> **Note:** This plugin was built as a portfolio project. It installs and runs correctly, but its main purpose is to demonstrate modern WordPress block development practices.
 
 ## Features
 
