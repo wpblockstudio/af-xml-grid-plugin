@@ -32,10 +32,7 @@ This project demonstrates modern WordPress block development practices, includin
 - **Modern build tooling**  
   Source code in `/src` is compiled with npm/webpack into a clean, distributable plugin folder under `/af-xml-grid`.
 
-
-
-This section highlights the coding practices rather than just the features, reinforcing that the plugin is a showcase project.
-
+  
 ## Features
 
 - **XML Feed Fetching** — Pulls items from configured feeds via a custom REST API endpoint.
