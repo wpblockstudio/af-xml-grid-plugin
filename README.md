@@ -105,6 +105,25 @@ This allows themes to override the default breakpoints used by the grid system.
 > **Note:** The `size` value must be an integer (e.g., `520`), not a string (e.g., `"520px"`).  
 > This ensures WordPress and the plugin interpret breakpoints correctly when generating CSS.
 
+### Feed Sources
+
+By default, the plugin includes a single feed source (`Wired`).  
+To add more sources, you’ll need to update **both** the PHP and JavaScript definitions:
+
+- In `af-xml-grid.php` (PHP), add the feed URL to the `$feed_options` array:
+  ```php
+  private static array $feed_options = [
+      'wired' => 'https://www.wired.com/feed/',
+      'example' => 'https://example.com/feed/',
+  ];
+
+- In `af-xml-grid/index.js`, add the new source to the `FEED_OPTIONS` array:
+  ```js
+  const FEED_OPTIONS = [
+      { label: 'Select', value: '' },
+      { label: 'Wired', value: 'wired' },
+      { label: 'Example', value: 'example' },
+  ];
 
 ## Roadmap
 
