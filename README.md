@@ -67,8 +67,7 @@ A WordPress block plugin that fetches items from an external XML feed (RSS/Atom)
 
 ### Breakpoints
 
-By default, the plugin includes hard-coded breakpoint definitions in PHP.  
-These can be overridden in your theme’s `theme.json` file using the following structure (under `custom.breakpoint`):
+By default, the plugin includes hard-coded breakpoint definitions in PHP. These can be overridden in your theme’s `theme.json` file using the following structure (under `custom.breakpoint`):
 
 ```json
 {
