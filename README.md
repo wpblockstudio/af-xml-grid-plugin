@@ -1,6 +1,6 @@
 # XML Grid Block Plugin
 
-A WordPress block plugin that fetches items from an external XML feed (RSS/Atom) and displays them in a responsive, paginated grid using the [Block Editor](https://developer.wordpress.org/block-editor/) and the [Interactivity API](https://developer.wordpress.org/block-editor/reference-guides/interactivity-api/).
+A WordPress block plugin that fetches items from an external XML feed (RSS/Atom) and displays them in a responsive, paginated grid using the [Block Editor](https://developer.wordpress.org/block-editor/) and the [Interactivity API](https://developer.wordpress.org/block-editor/reference-guides/interactivity-api/api-reference/).
 
 > **Note:** This plugin was built as a portfolio project. It installs and runs correctly, but its main purpose is to demonstrate modern WordPress block development practices.
 
