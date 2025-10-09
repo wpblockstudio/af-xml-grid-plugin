@@ -71,7 +71,7 @@ By default, the plugin includes hard-coded breakpoint definitions in PHP.
 These can be overridden in your theme’s `theme.json` file using the following structure (under `custom.breakpoint`):
 
 ```json
-"custom": {
+{"custom": {
   "breakpoints": {
     "xs": {
       "label": "Extra Small",
@@ -94,7 +94,7 @@ These can be overridden in your theme’s `theme.json` file using the following 
       "size": 1304
     }
   }
-}
+}}
 ```
 
 This allows themes to override the default breakpoints used by the grid system.
