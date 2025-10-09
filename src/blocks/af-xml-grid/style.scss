@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: flex-start;
   box-sizing: border-box;
 
@@ -25,5 +25,18 @@
     width: 100%;
     max-width: var(--column-width);
     box-sizing: border-box;
+  }
+
+  .af-xml-grid__footer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: inherit;
+    margin-top:25px;
+
+    &.hidden {
+      display: none;
+    }
   }
 }

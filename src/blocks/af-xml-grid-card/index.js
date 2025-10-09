@@ -11,11 +11,29 @@ const blockClassNames = (attributes, editor = false) => {
     ].filter(Boolean).join(' ');
 };
 
+const blockStyles = (attributes) => {
+
+    return Object.fromEntries(Object.entries({
+        rowGap: resolvePresetVar(attributes?.style?.spacing?.blockGap?.top ?? null),
+    }).filter(Boolean));
+};
+
+const resolvePresetVar = (value) => {
+    if (typeof value === 'string' && value.startsWith('var:preset|')) {
+        // turn "var:preset|spacing|50" → "var(--wp--preset--spacing--50)"
+        const parts = value.replace('var:preset|', '').split('|');
+        return `var(--wp--preset--${parts.join('--')})`;
+    }
+    return value;
+};
+
+
 registerBlockType('af/xml-grid-card', {
     edit: ({attributes}) => {
 
         const blockProps = useBlockProps({
-            className: blockClassNames(attributes,true),
+            className: blockClassNames(attributes, true),
+            style: blockStyles(attributes),
         });
 
         const innerBlocksProps = useInnerBlocksProps(blockProps, {});
@@ -28,7 +46,8 @@ registerBlockType('af/xml-grid-card', {
     },
     save: ({attributes}) => {
         const blockProps = useBlockProps.save({
-            className: blockClassNames(attributes, false)
+            className: blockClassNames(attributes, false),
+            style: blockStyles(attributes),
         });
 
         const innerBlocksProps = useInnerBlocksProps.save(blockProps);

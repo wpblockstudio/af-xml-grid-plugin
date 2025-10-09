@@ -21,6 +21,7 @@
   },
   "supports": {
     "layout": false,
+    "shadow": true,
     "color": {
       "background": true,
       "text": true,
@@ -32,9 +33,19 @@
       "radius": true,
       "style": true
     },
+    "typography": {
+      "textAlign": true,
+      "fontSize": true,
+      "fontStyle": true,
+      "lineHeight": true,
+      "letterSpacing": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalTextTransform": true
+    },
     "spacing": {
       "blockGap": [
-        "horizontal",
         "vertical"
       ],
       "margin": true,

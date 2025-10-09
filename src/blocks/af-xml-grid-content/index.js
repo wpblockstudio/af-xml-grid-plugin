@@ -28,7 +28,9 @@ const getBlockStyles = (settings) => {
 
     return Object.fromEntries(Object.entries({
         '--line-clamp': settings?.lineClamp || null,
+        flexGrow: !!settings?.['grow'] ? '1' : null,
     }).filter(Boolean));
+
 };
 
 const TYPE_OPTIONS = [
@@ -47,7 +49,7 @@ registerBlockType('af/xml-grid-content', {
     edit: ({attributes, setAttributes}) => {
 
         const {settings = {}} = attributes;
-        const {type, lineClamp, customKey, link, dateFormat, label, fullWidth} = settings;
+        const {type, lineClamp, grow, link, label, fullWidth} = settings;
 
         const blockStyles = useMemo(() => getBlockStyles(settings), [settings]);
 
@@ -125,6 +127,15 @@ registerBlockType('af/xml-grid-content', {
                                     __nextHasNoMarginBottom
                                 />
 
+                                <ToggleControl
+                                    key={'grow'}
+                                    label="Grow"
+                                    checked={!!grow}
+                                    onChange={(newValue) => updateSettings({grow: newValue})}
+                                    __next40pxDefaultSize
+                                    __nextHasNoMarginBottom
+                                />
+
                             </Grid>
 
                         </Grid>
@@ -140,6 +151,7 @@ registerBlockType('af/xml-grid-content', {
         const type = settings.type || 'description';
         const blockProps = useBlockProps.save({
             className: blockClassNames(attributes),
+            style: getBlockStyles(settings)
         });
 
         // Case 1: Image

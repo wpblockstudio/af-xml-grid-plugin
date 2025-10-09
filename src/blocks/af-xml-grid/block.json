@@ -15,6 +15,7 @@
     "af/xml-grid-card"
   ],
   "supports": {
+    "alignWide": true,
     "layout": false,
     "interactivity": true,
     "color": {

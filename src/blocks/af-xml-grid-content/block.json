@@ -39,15 +39,15 @@
       "aspectRatio": true
     },
     "typography": {
-      "fontSize": true,
-      "lineHeight": true,
-      "color": true,
-      "fontFamily": true,
-      "fontWeight": true,
-      "letterSpacing": true,
-      "textTransform": true,
       "textAlign": true,
-      "textDecoration": true
+      "fontSize": true,
+      "fontStyle": true,
+      "lineHeight": true,
+      "letterSpacing": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalTextTransform": true
     }
   },
   "editorScript": "file:./index.js",
