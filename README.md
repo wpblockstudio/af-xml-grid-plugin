@@ -4,6 +4,38 @@ A WordPress block plugin that fetches items from an external XML feed (RSS/Atom)
 
 > **Note:** This plugin was built as a portfolio project. It installs and runs correctly, but its main purpose is to demonstrate modern WordPress block development practices.
 
+### Techniques & Patterns
+
+This project demonstrates modern WordPress block development practices, including:
+
+- **Block-based architecture**  
+  Split into `xml-grid`, `xml-grid-card`, and `xml-grid-content` blocks to mirror WordPress’s native block system and encourage composability.
+
+- **REST API integration**  
+  Custom endpoint to fetch and cache external XML feeds, using WordPress transients for performance.
+
+- **PHP ↔ JS synchronization**  
+  Feed options are defined in both `af-xml-grid.php` and `index.js`.  
+  This ensures that only predefined feeds can be queried: the editor controls save the feed’s array key, which is sent to PHP from the front-end, and PHP resolves it to a URL.  
+  If feed URLs were sent directly from the frontend, anyone could hit the REST endpoint with arbitrary URLs — this design avoids that security risk.
+
+- **Dynamic block registration**  
+  All compiled blocks are auto-registered in PHP by scanning the `/blocks` directory, eliminating manual block setup.
+
+- **Interactivity API usage**  
+  Uses WordPress’s new Interactivity API for reveal animations, progressive loading, and “Load More” interactions with client-side state management.  
+  Grid items are displayed using the `-each` directive, binding feed items from state directly into the DOM.
+
+- **Responsive system**  
+  Breakpoints are hard-coded in PHP but can be overridden via `theme.json` for theme-level customization.
+
+- **Modern build tooling**  
+  Source code in `/src` is compiled with npm/webpack into a clean, distributable plugin folder under `/af-xml-grid`.
+
+
+
+This section highlights the coding practices rather than just the features, reinforcing that the plugin is a showcase project.
+
 ## Features
 
 - **XML Feed Fetching** — Pulls items from configured feeds via a custom REST API endpoint.
