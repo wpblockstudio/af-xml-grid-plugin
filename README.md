@@ -133,6 +133,7 @@ Planned improvements and future features include:
 - **Endpoint security** — Harden API endpoints and request validation for safer usage.
 - **Sorting options** — Allow sorting feed items (e.g., by date, title, or custom criteria) in both editor and frontend.
 - **Masonry JS** — Add support for masonry layouts.
+- **Improved reveal options** — Add support for many more reveal animations.
 
 ## License
 
