@@ -335,7 +335,7 @@ registerBlockType('af/xml-grid', {
                     class="wp-element-button"
                     data-wp-on--click="actions.loadMore"
                 >
-                    Load more
+                    {settings?.buttonLabel ?? 'Load more'}
                 </button>
                 </div>
             </div>
