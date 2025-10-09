@@ -4,7 +4,7 @@
  * Description: A plugin that provides an XML Grid block for displaying XML feeds.
  * Author: Alex Ferrao
  * Version: 1.0.0
- * Text Domain: aferrao
+ * Text Domain: AF
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
