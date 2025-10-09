@@ -108,7 +108,7 @@ This allows themes to override the default breakpoints used by the grid system.
 
 By default, the plugin includes a single feed source (`Wired`). To add more sources, you’ll need to update **both** the PHP and JavaScript definitions:
 
-- In `af-xml-grid.php` (PHP), add the feed URL to the `$feed_options` array:
+- In `af-xml-grid.php`, add the feed URL to the `$feed_options` array:
   ```php
   private static array $feed_options = [
       'wired' => 'https://www.wired.com/feed/',
