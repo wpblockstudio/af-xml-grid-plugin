@@ -102,6 +102,9 @@ These can be overridden in your theme’s `theme.json` file using the following 
 ```
 
 This allows themes to override the default breakpoints used by the grid system.
+> **Note:** The `size` value must be an integer (e.g., `520`), not a string (e.g., `"520px"`).  
+> This ensures WordPress and the plugin interpret breakpoints correctly when generating CSS.
+
 
 ## Roadmap
 
