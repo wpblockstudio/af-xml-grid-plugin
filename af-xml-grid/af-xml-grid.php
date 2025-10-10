@@ -177,7 +177,7 @@ class AF {
 
 		// Breakpoints from theme.json with default values
 		// Add/Manage these options in "settings" → "custom"
-		$breakpoints = wp_get_global_settings( [ 'custom', 'breakpoints' ] ) ?? [
+		$breakpoints = wp_get_global_settings(['custom'])['breakpoints'] ?? [
 			'xs' => [
 				'label' => 'Extra Small',
 				'size'  => 520,
