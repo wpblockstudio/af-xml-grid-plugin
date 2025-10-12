@@ -17,19 +17,15 @@ class AF {
 	private static AF|null $instance = null;
 
 	/** @var array */
-	private static array $feed_options;
-
-	/** @var array */
 	private static array $breakpoints;
 
 	private function __construct() {
 
-		// Initialize default settings
-		self::init_class();
-
+		// Initialize defaults
+		add_action( 'init', [ $this, 'init_class' ], 5 );
 
 		// Initialize blocks
-		add_action( ( class_exists( 'ACF' ) ? 'acf/init' : 'init' ), [ $this, 'register_blocks' ] );
+		add_action( 'init', [ $this, 'register_blocks' ], 10 );
 
 		// Expose custom settings to the editor
 		add_action( 'enqueue_block_editor_assets', [ $this, 'expose_custom_settings' ] );
@@ -71,9 +67,9 @@ class AF {
 		] );
 	}
 
-	private function init_class(): void {
+	public function init_class(): void {
 
-		self::$breakpoints = [
+		self::$breakpoints = wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? [
 			'xs'     => [
 				'label' => 'Extra Small',
 				'size'  => 520,
@@ -96,10 +92,6 @@ class AF {
 			],
 		];
 
-		self::$feed_options = [
-			'wired' => 'https://www.wired.com/feed/',
-		];
-
 	}
 
 	public function af_get_xml_feed( WP_REST_Request $request ): WP_REST_Response {
@@ -107,7 +99,9 @@ class AF {
 		$date_format = $request->get_param( 'dateFormat' );
 		$image_size  = $request->get_param( 'imageSize' );
 
-		$feed_url = self::$feed_options[ $feed ] ?? false;
+		$feed_url = wp_get_global_settings( [ 'custom' ] )['xml'] ?? [
+			'wired' => 'https://www.wired.com/feed/',
+		];
 
 		$cache_key = 'af_xml_feed_' . md5( $feed_url );
 		$cached    = get_transient( $cache_key );
@@ -221,7 +215,7 @@ class AF {
 
 		// Breakpoints from theme.json with default values
 		// Add/Manage these options in "settings" → "custom"
-		$breakpoints = wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [];
+		$breakpoints = &self::$breakpoints;
 
 		// Selector: block name (slash → dash) + instanceId
 		$parsed_name = str_replace( '/', '-', $parsed_block['blockName'] );
@@ -288,7 +282,7 @@ class AF {
 	public function expose_custom_settings(): void {
 
 		$settings = [
-			'breakpoints' => wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [],
+			'breakpoints' => self::$breakpoints,
 			'nonce'       => wp_create_nonce( 'af' )
 		];
 
