@@ -62,10 +62,6 @@ store("af/xml-grid", {
                 );
                 const allItems = await response.json();
 
-                if(!allItems?.length){
-                    return;
-                }
-
                 state.allItems = allItems;
                 state.pageSize = parseInt(maxItems, 10);
                 state.visibleCount = state.pageSize;

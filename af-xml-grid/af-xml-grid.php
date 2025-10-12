@@ -48,7 +48,7 @@ class AF {
 			'permission_callback' => function( \WP_REST_Request $request ) {
 				return wp_verify_nonce(
 					$request->get_header( 'X-WP-Nonce' ),
-					'wp_rest'
+					'af_nonce'
 				);
 			},
 			'args'                => [
@@ -299,7 +299,7 @@ class AF {
 	public function expose_custom_settings(): void {
 
 		$settings = [
-			'nonce'       => wp_create_nonce( 'af' )
+			'nonce'       => wp_create_nonce( 'af_nonce' ),
 		];
 
 		echo '<script>window.AF = ' . wp_json_encode( $settings ) . ';</script>';
