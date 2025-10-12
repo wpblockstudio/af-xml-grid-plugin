@@ -223,8 +223,6 @@ class AF {
 		// Add/Manage these options in "settings" → "custom"
 		$breakpoints = wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [];
 
-		self::console_log( $breakpoints );
-
 		// Selector: block name (slash → dash) + instanceId
 		$parsed_name = str_replace( '/', '-', $parsed_block['blockName'] );
 		$selector    = '.' . $parsed_name . '.' . $instance_id;
