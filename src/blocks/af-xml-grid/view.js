@@ -47,14 +47,19 @@ store("af/xml-grid", {
                     Object.entries({
                         feed,
                         dateFormat,
-                        imageSize,
-                        nonce
+                        imageSize
                     }).filter(([_, v]) => v != null && v !== "")
                 )
             );
 
             try {
-                const response = await fetch(`/wp-json/af/v1/xml-feed?${params.toString()}`);
+                const response = await fetch(`/wp-json/af/v1/xml-feed?${params.toString()}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-WP-Nonce': nonce
+                        }
+                    }
+                );
                 const allItems = await response.json();
 
                 state.allItems = allItems;

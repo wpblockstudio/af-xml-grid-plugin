@@ -48,7 +48,12 @@ class AF {
 		register_rest_route( 'af/v1', '/xml-feed', [
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'af_get_xml_feed' ],
-			'permission_callback' => '__return_true',
+			'permission_callback' => function( \WP_REST_Request $request ) {
+				return wp_verify_nonce(
+					$request->get_header( 'X-WP-Nonce' ),
+					'wp_rest'
+				);
+			},
 			'args'                => [
 				'feed'       => [
 					'required' => true,
