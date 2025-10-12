@@ -31,13 +31,14 @@ class AF {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'expose_custom_settings_editor' ] );
 
 		// Expose custom settings to the front-end
-		add_action( 'wp_print_scripts', [ $this, 'expose_custom_settings' ] );
+		add_action( 'wp_footer', [ $this, 'expose_custom_settings' ] );
 
 		// Output frontend styles per block
 		add_filter( 'render_block_data', [ $this, 'output_block_styles' ] );
 
 		// Register endpoint
 		add_action( 'rest_api_init', [ $this, 'define_rest_endpoint' ] );
+
 	}
 
 	public function define_rest_endpoint(): void {
@@ -301,11 +302,7 @@ class AF {
 			'nonce'       => wp_create_nonce( 'af' )
 		];
 
-		wp_add_inline_script(
-			'af-inline',
-			'window.AF = ' . wp_json_encode( $settings ) . ';',
-			'before'
-		);
+		echo '<script>window.AF = ' . wp_json_encode( $settings ) . ';</script>';
 	}
 
 	/**
