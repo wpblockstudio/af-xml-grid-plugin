@@ -37,7 +37,7 @@ store("af/xml-grid", {
         async fetchFeed(context) {
             const {state, callbacks} = store("af/xml-grid");
             const {feed, maxItems = 12, dateFormat, imageSize = null} = context;
-            const {settings = {}} = AF ?? {};
+            const {settings = {}} = window.AF ?? {};
             const {nonce = ""} = settings;
 
             if (!feed) return;
@@ -61,6 +61,10 @@ store("af/xml-grid", {
                     }
                 );
                 const allItems = await response.json();
+
+                if(!allItems?.length){
+                    return;
+                }
 
                 state.allItems = allItems;
                 state.pageSize = parseInt(maxItems, 10);

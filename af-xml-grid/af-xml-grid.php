@@ -28,13 +28,13 @@ class AF {
 		add_action( 'init', [ $this, 'register_blocks' ], 10 );
 
 		// Expose custom settings to the editor
-		add_action( 'enqueue_block_editor_assets', [ $this, 'expose_custom_settings' ] );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'expose_custom_settings_editor' ] );
+
+		// Expose custom settings to the front-end
+		add_action( 'wp_print_scripts', [ $this, 'expose_custom_settings' ] );
 
 		// Output frontend styles per block
 		add_filter( 'render_block_data', [ $this, 'output_block_styles' ] );
-
-		// Register plugin assets
-		add_action( 'wp_enqueue_scripts', [ $this, 'register_assets' ] );
 
 		// Register endpoint
 		add_action( 'rest_api_init', [ $this, 'define_rest_endpoint' ] );
@@ -92,6 +92,9 @@ class AF {
 			],
 		];
 
+		// Register an empty script handle
+		wp_register_script( 'af-inline', '' );
+
 	}
 
 	public function af_get_xml_feed( WP_REST_Request $request ): WP_REST_Response {
@@ -99,9 +102,13 @@ class AF {
 		$date_format = $request->get_param( 'dateFormat' );
 		$image_size  = $request->get_param( 'imageSize' );
 
-		$feed_url = wp_get_global_settings( [ 'custom' ] )['xml'] ?? [
+		$feed_url = (wp_get_global_settings( [ 'custom' ] )['xml'] ?? [
 			'wired' => 'https://www.wired.com/feed/',
-		];
+		])[$feed] ?? false;
+
+		if ( empty($feed_url) ) {
+			return new WP_REST_Response( [ 'error' => 'Invalid feed' ], 400 );
+		}
 
 		$cache_key = 'af_xml_feed_' . md5( $feed_url );
 		$cached    = get_transient( $cache_key );
@@ -191,13 +198,6 @@ class AF {
 	}
 
 	/**
-	 * Register plugin assets
-	 */
-	public function register_assets( $parsed_block ): void {
-
-	}
-
-	/**
 	 * Output frontend styles per block
 	 */
 	public function output_block_styles( $parsed_block ): array {
@@ -279,15 +279,30 @@ class AF {
 	/**
 	 * Expose custom settings to the editor
 	 */
-	public function expose_custom_settings(): void {
+	public function expose_custom_settings_editor(): void {
 
 		$settings = [
 			'breakpoints' => self::$breakpoints,
-			'nonce'       => wp_create_nonce( 'af' )
 		];
 
 		wp_add_inline_script(
 			'wp-blocks',
+			'window.AF = ' . wp_json_encode( $settings ) . ';',
+			'before'
+		);
+	}
+
+	/**
+	 * Expose custom settings to the front-end
+	 */
+	public function expose_custom_settings(): void {
+
+		$settings = [
+			'nonce'       => wp_create_nonce( 'af' )
+		];
+
+		wp_add_inline_script(
+			'af-inline',
 			'window.AF = ' . wp_json_encode( $settings ) . ';',
 			'before'
 		);
