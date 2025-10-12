@@ -35,8 +35,10 @@ store("af/xml-grid", {
     },
     actions: {
         async fetchFeed(context) {
-            const {state,callbacks} = store("af/xml-grid");
+            const {state, callbacks} = store("af/xml-grid");
             const {feed, maxItems = 12, dateFormat, imageSize = null} = context;
+            const {settings = {}} = AF ?? {};
+            const {nonce = ""} = settings;
 
             if (!feed) return;
 
@@ -46,6 +48,7 @@ store("af/xml-grid", {
                         feed,
                         dateFormat,
                         imageSize,
+                        nonce
                     }).filter(([_, v]) => v != null && v !== "")
                 )
             );
@@ -72,7 +75,7 @@ store("af/xml-grid", {
         },
 
         loadMore() {
-            const {state,callbacks} = store("af/xml-grid");
+            const {state, callbacks} = store("af/xml-grid");
 
 
             state.visibleCount = Math.min(
@@ -87,7 +90,7 @@ store("af/xml-grid", {
         },
 
         async init() {
-            const {actions,state} = store("af/xml-grid");
+            const {actions, state} = store("af/xml-grid");
             const context = getContext();
             const {ref: element} = getElement();
 

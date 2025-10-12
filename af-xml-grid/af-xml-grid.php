@@ -17,11 +17,17 @@ class AF {
 	private static AF|null $instance = null;
 
 	/** @var array */
-	private static array $feed_options = [
-		'wired' => 'https://www.wired.com/feed/',
-	];
+	private static array $feed_options;
+
+	/** @var array */
+	private static array $breakpoints;
 
 	private function __construct() {
+
+		// Initialize default settings
+		self::init_class();
+
+
 		// Initialize blocks
 		add_action( ( class_exists( 'ACF' ) ? 'acf/init' : 'init' ), [ $this, 'register_blocks' ] );
 
@@ -32,36 +38,69 @@ class AF {
 		add_filter( 'render_block_data', [ $this, 'output_block_styles' ] );
 
 		// Register plugin assets
-		add_action( 'wp_enqueue_scripts', [$this, 'register_assets']);
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_assets' ] );
 
 		// Register endpoint
-		add_action( 'rest_api_init', function () {
-			register_rest_route( 'af/v1', '/xml-feed', [
-				'methods'             => 'GET',
-				'callback'            => [$this,'af_get_xml_feed'],
-				'permission_callback' => '__return_true',
-				'args'                => [
-					'feed' => [
-						'required' => true,
-						'type'     => 'string'
-					],
-					'dateFormat' => [
-						'required' => false,
-						'type'     => 'string'
-					],
-					'imageSize' => [
-						'required' => false,
-						'type'     => 'string'
-					],
+		add_action( 'rest_api_init', [ $this, 'define_rest_endpoint' ] );
+	}
+
+	public function define_rest_endpoint(): void {
+		register_rest_route( 'af/v1', '/xml-feed', [
+			'methods'             => 'GET',
+			'callback'            => [ $this, 'af_get_xml_feed' ],
+			'permission_callback' => '__return_true',
+			'args'                => [
+				'feed'       => [
+					'required' => true,
+					'type'     => 'string'
 				],
-			] );
-		} );
+				'dateFormat' => [
+					'required' => false,
+					'type'     => 'string'
+				],
+				'imageSize'  => [
+					'required' => false,
+					'type'     => 'string'
+				],
+			],
+		] );
+	}
+
+	private function init_class(): void {
+
+		self::$breakpoints = [
+			'xs'     => [
+				'label' => 'Extra Small',
+				'size'  => 520,
+			],
+			'sm'     => [
+				'label' => 'Small',
+				'size'  => 768,
+			],
+			'md'     => [
+				'label' => 'Medium',
+				'size'  => 1040,
+			],
+			'normal' => [
+				'label' => 'Normal',
+				'size'  => 1240,
+			],
+			'lg'     => [
+				'label' => 'Large',
+				'size'  => 1304,
+			],
+		];
+
+		self::$feed_options = [
+			'wired' => 'https://www.wired.com/feed/',
+		];
+
 	}
 
 	public function af_get_xml_feed( WP_REST_Request $request ): WP_REST_Response {
-		$feed = $request->get_param( 'feed' );
+		$feed        = $request->get_param( 'feed' );
 		$date_format = $request->get_param( 'dateFormat' );
-		$image_size = $request->get_param( 'imageSize' );
+		$image_size  = $request->get_param( 'imageSize' );
 
 		$feed_url = self::$feed_options[ $feed ] ?? false;
 
@@ -118,17 +157,17 @@ class AF {
 				}
 			}
 
-			$raw_date = (string) $item->pubDate;
+			$raw_date       = (string) $item->pubDate;
 			$formatted_date = $raw_date; // default fallback
 
 			try {
-				$dt = new DateTime($raw_date);
+				$dt = new DateTime( $raw_date );
 				// Always prefer param if provided, otherwise fallback to default
-				if ( ! empty($date_format) ) {
-					$formatted_date = $dt->format($date_format);
+				if ( ! empty( $date_format ) ) {
+					$formatted_date = $dt->format( $date_format );
 				} else {
 					// Default format (e.g. "October 8, 2025")
-					$formatted_date = $dt->format('F j, Y');
+					$formatted_date = $dt->format( 'F j, Y' );
 				}
 			} catch ( Exception $e ) {
 				// leave as raw string if parsing fails
@@ -177,28 +216,9 @@ class AF {
 
 		// Breakpoints from theme.json with default values
 		// Add/Manage these options in "settings" → "custom"
-		$breakpoints = wp_get_global_settings(['custom'])['breakpoints'] ?? [
-			'xs' => [
-				'label' => 'Extra Small',
-				'size'  => 520,
-			],
-			'sm' => [
-				'label' => 'Small',
-				'size'  => 768,
-			],
-			'md' => [
-				'label' => 'Medium',
-				'size'  => 1040,
-			],
-			'normal' => [
-				'label' => 'Normal',
-				'size'  => 1240,
-			],
-			'lg' => [
-				'label' => 'Large',
-				'size'  => 1304,
-			],
-		];
+		$breakpoints = wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [];
+
+		self::console_log( $breakpoints );
 
 		// Selector: block name (slash → dash) + instanceId
 		$parsed_name = str_replace( '/', '-', $parsed_block['blockName'] );
@@ -225,6 +245,7 @@ class AF {
 				function ( string $a, string $b ) use ( $breakpoints ): int {
 					$sizeA = (int) ( $breakpoints[ $a ]['size'] ?? 0 );
 					$sizeB = (int) ( $breakpoints[ $b ]['size'] ?? 0 );
+
 					return $sizeB <=> $sizeA; // reverse order
 				}
 			);
@@ -264,7 +285,8 @@ class AF {
 	public function expose_custom_settings(): void {
 
 		$settings = [
-			'breakpoints' => wp_get_global_settings( [ 'custom', 'breakpoints' ] ),
+			'breakpoints' => wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [],
+			'nonce'       => wp_create_nonce( 'my_action' )
 		];
 
 		wp_add_inline_script(
