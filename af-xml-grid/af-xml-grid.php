@@ -286,7 +286,7 @@ class AF {
 
 		$settings = [
 			'breakpoints' => wp_get_global_settings( [ 'custom' ] )['breakpoints'] ?? self::$breakpoints ?? [],
-			'nonce'       => wp_create_nonce( 'my_action' )
+			'nonce'       => wp_create_nonce( 'af' )
 		];
 
 		wp_add_inline_script(
