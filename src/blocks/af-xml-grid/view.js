@@ -37,10 +37,10 @@ store("af/xml-grid", {
         async fetchFeed(context) {
             const {state, callbacks} = store("af/xml-grid");
             const {feed, maxItems = 12, dateFormat, imageSize = null} = context;
-            const {settings = {}} = window.AF ?? {};
-            const {nonce = ""} = settings;
 
-            if (!feed) return;
+            if (!feed) {
+                return
+            }
 
             const params = new URLSearchParams(
                 Object.fromEntries(
@@ -53,22 +53,22 @@ store("af/xml-grid", {
             );
 
             try {
-                const response = await fetch(`/wp-json/af/v1/xml-feed?${params.toString()}`, {
-                        method: 'GET',
-                        headers: {
-                            'X-WP-Nonce': nonce
-                        }
-                    }
-                );
-                const allItems = await response.json();
 
-                state.allItems = allItems;
+                const response = await fetch(`/wp-json/af/v1/xml-feed?${params.toString()}`);
+
+                const data = await response.json();
+
+                const {items} = data;
+
+                if(!items){return}
+
+                state.allItems = items;
                 state.pageSize = parseInt(maxItems, 10);
                 state.visibleCount = state.pageSize;
-                state.items = allItems.slice(0, state.visibleCount);
+                state.items = items.slice(0, state.visibleCount);
 
                 state.imageSize = imageSize;
-                state.hasMore = state.visibleCount < allItems.length;
+                state.hasMore = state.visibleCount < items.length;
 
                 state.isLoaded = true;
 

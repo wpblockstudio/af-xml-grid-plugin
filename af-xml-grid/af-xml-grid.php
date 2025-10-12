@@ -30,9 +30,6 @@ class AF {
 		// Expose custom settings to the editor
 		add_action( 'enqueue_block_editor_assets', [ $this, 'expose_custom_settings_editor' ] );
 
-		// Expose custom settings to the front-end
-		add_action( 'wp_footer', [ $this, 'expose_custom_settings' ] );
-
 		// Output frontend styles per block
 		add_filter( 'render_block_data', [ $this, 'output_block_styles' ] );
 
@@ -45,12 +42,7 @@ class AF {
 		register_rest_route( 'af/v1', '/xml-feed', [
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'af_get_xml_feed' ],
-			'permission_callback' => function( \WP_REST_Request $request ) {
-				return wp_verify_nonce(
-					$request->get_header( 'X-WP-Nonce' ),
-					'af_nonce'
-				);
-			},
+			'permission_callback' => '__return_true',
 			'args'                => [
 				'feed'       => [
 					'required' => true,
@@ -93,9 +85,6 @@ class AF {
 			],
 		];
 
-		// Register an empty script handle
-		wp_register_script( 'af-inline', '' );
-
 	}
 
 	public function af_get_xml_feed( WP_REST_Request $request ): WP_REST_Response {
@@ -103,11 +92,11 @@ class AF {
 		$date_format = $request->get_param( 'dateFormat' );
 		$image_size  = $request->get_param( 'imageSize' );
 
-		$feed_url = (wp_get_global_settings( [ 'custom' ] )['xml'] ?? [
+		$feed_url = ( wp_get_global_settings( [ 'custom' ] )['xml'] ?? [
 			'wired' => 'https://www.wired.com/feed/',
-		])[$feed] ?? false;
+		] )[ $feed ] ?? false;
 
-		if ( empty($feed_url) ) {
+		if ( empty( $feed_url ) ) {
 			return new WP_REST_Response( [ 'error' => 'Invalid feed' ], 400 );
 		}
 
@@ -195,7 +184,9 @@ class AF {
 
 		}
 
-		return new WP_REST_Response( $items, 200 );
+		return new WP_REST_Response( [
+			'items'  => $items,
+		], 200 );
 	}
 
 	/**
@@ -291,18 +282,6 @@ class AF {
 			'window.AF = ' . wp_json_encode( $settings ) . ';',
 			'before'
 		);
-	}
-
-	/**
-	 * Expose custom settings to the front-end
-	 */
-	public function expose_custom_settings(): void {
-
-		$settings = [
-			'nonce'       => wp_create_nonce( 'af_nonce' ),
-		];
-
-		echo '<script>window.AF = ' . wp_json_encode( $settings ) . ';</script>';
 	}
 
 	/**
