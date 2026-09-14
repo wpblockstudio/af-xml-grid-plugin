@@ -55,14 +55,14 @@ This project demonstrates modern WordPress block development practices, includin
 
 ### Option 1: Install the prebuilt release (recommended)
 1. Download the latest release ZIP from the **Releases** page.
-    - https://github.com/thedivlabs/af-xml-grid-plugin/releases
+    - https://github.com/wpblockstudio/af-xml-grid-plugin/releases
 2. In your WordPress admin, go to **Plugins → Add New → Upload Plugin**.
 3. Upload the ZIP and activate the plugin.
 
 ### Option 2: Build from source (for developers)
 1. Clone this repository into any working directory:
    ```bash
-   git clone https://github.com/thedivlabs/af-xml-grid-plugin.git
+   git clone https://github.com/wpblockstudio/af-xml-grid-plugin.git
    cd af-xml-grid-plugin
    ```
 2. Install dependencies and build:
@@ -143,6 +143,7 @@ By default, the plugin includes a single feed source (`Wired`). To add more sour
       'wired' => 'https://www.wired.com/feed/',
       'example' => 'https://example.com/feed/',
   ];
+  ```
 
 - In `af-xml-grid/index.js`, add the new source to the `FEED_OPTIONS` array:
   ```js
@@ -151,6 +152,7 @@ By default, the plugin includes a single feed source (`Wired`). To add more sour
       { label: 'Wired', value: 'wired' },
       { label: 'Example', value: 'example' },
   ];
+  ```
 
 ## Roadmap
 
